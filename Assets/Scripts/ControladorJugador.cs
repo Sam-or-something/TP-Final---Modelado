@@ -6,10 +6,12 @@ public class ControladorJugador : MonoBehaviour
 {
     public float movementSpeed, jumpForce;
     bool onFloor;
+    Rigidbody rb;
 
     void Start()
     {
         onFloor = true;
+        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -23,7 +25,7 @@ public class ControladorJugador : MonoBehaviour
             transform.Translate(-movementSpeed, 0, 0);
         }
         if(Input.GetKey(KeyCode.W) && onFloor){
-            transform.Translate(0, jumpForce, 0);
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             onFloor = false;
         }
     }
@@ -32,6 +34,10 @@ public class ControladorJugador : MonoBehaviour
         if (col.gameObject.tag == "Piso")
         {
             onFloor = true;
+        }
+        if (col.gameObject.tag == "Die")
+        {
+            Destroy(gameObject);
         }
     }
 }
