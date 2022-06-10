@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Lluvia : MonoBehaviour
 {
-    public GameObject bomb;
+    private Jugar boton;
+    public GameObject bomb, controlador;
     GameObject clone;
     float timer;
     public float timeBetweenBombs;
@@ -12,17 +13,22 @@ public class Lluvia : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        timer = timeBetweenBombs;
+        boton = controlador.GetComponent<Jugar>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        timer -= Time.deltaTime;
-        if (timer <= 0 && transform.position.z >= -6)
+        if (boton.playing)
         {
-            clone = Instantiate(bomb);
-            clone.transform.position = gameObject.transform.position - Vector3.forward;
-            timer = timeBetweenBombs;
+            timer = timer - Time.deltaTime;
+            if (timer <= 0 && transform.position.z >= -6)
+            {
+                clone = Instantiate(bomb);
+                clone.transform.position = gameObject.transform.position - Vector3.forward;
+                timer = timeBetweenBombs;
+            }
         }
     }
 }

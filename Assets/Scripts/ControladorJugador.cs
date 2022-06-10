@@ -5,6 +5,8 @@ using UnityEngine;
 public class ControladorJugador : MonoBehaviour
 {
     public float movementSpeed, jumpForce;
+    private Jugar boton;
+    public GameObject controlador;
     bool onFloor;
     Rigidbody rb;
 
@@ -12,21 +14,26 @@ public class ControladorJugador : MonoBehaviour
     {
         onFloor = true;
         rb = GetComponent<Rigidbody>();
+        boton = controlador.GetComponent<Jugar>();
     }
 
     void Update()
-    { 
-        if (Input.GetKey(KeyCode.D))
+    {
+        if (boton.playing)
         {
-            transform.Translate(movementSpeed, 0, 0);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.Translate(-movementSpeed, 0, 0);
-        }
-        if(Input.GetKey(KeyCode.W) && onFloor){
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            onFloor = false;
+            if (Input.GetKey(KeyCode.D) && transform.position.x > -4)
+            {
+                transform.Translate(movementSpeed, 0, 0);
+            }
+            if (Input.GetKey(KeyCode.A) && transform.position.x < 4)
+            {
+                transform.Translate(-movementSpeed, 0, 0);
+            }
+            if (Input.GetKey(KeyCode.W) && onFloor)
+            {
+                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                onFloor = false;
+            }
         }
     }
     void OnCollisionEnter(Collision col)
@@ -38,6 +45,10 @@ public class ControladorJugador : MonoBehaviour
         if (col.gameObject.tag == "Die")
         {
             Destroy(gameObject);
+        }
+        if(col.gameObject.tag == "Win")
+        {
+            boton.playing = false;
         }
     }
 }
