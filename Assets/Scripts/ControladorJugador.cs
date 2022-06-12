@@ -1,17 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ControladorJugador : MonoBehaviour
 {
     public float movementSpeed, jumpForce;
     private Jugar boton;
     public GameObject controlador;
+    public Canvas ganaste, perdiste;
     bool onFloor;
     Rigidbody rb;
 
     void Start()
     {
+        ganaste.enabled = !enabled;
+        perdiste.enabled = !enabled;
         onFloor = true;
         rb = GetComponent<Rigidbody>();
         boton = controlador.GetComponent<Jugar>();
@@ -21,11 +25,11 @@ public class ControladorJugador : MonoBehaviour
     {
         if (boton.playing)
         {
-            if (Input.GetKey(KeyCode.D) && transform.position.x > -4)
+            if (Input.GetKey(KeyCode.D) && transform.position.x <= 4)
             {
                 transform.Translate(movementSpeed, 0, 0);
             }
-            if (Input.GetKey(KeyCode.A) && transform.position.x < 4)
+            if (Input.GetKey(KeyCode.A) && transform.position.x >= -4)
             {
                 transform.Translate(-movementSpeed, 0, 0);
             }
@@ -44,11 +48,14 @@ public class ControladorJugador : MonoBehaviour
         }
         if (col.gameObject.tag == "Die")
         {
+            perdiste.enabled = enabled;
+            boton.playing = false;
             Destroy(gameObject);
         }
         if(col.gameObject.tag == "Win")
         {
             boton.playing = false;
+            ganaste.enabled = enabled;
         }
     }
 }
