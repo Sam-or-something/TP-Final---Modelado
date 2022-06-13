@@ -10,7 +10,10 @@ public class ControladorJugador : MonoBehaviour
     public GameObject controlador;
     public Canvas ganaste, perdiste;
     bool onFloor;
+    public bool winning;
     Rigidbody rb;
+    public AudioSource source;
+    public AudioClip roblox;
 
     void Start()
     {
@@ -48,12 +51,15 @@ public class ControladorJugador : MonoBehaviour
         }
         if (col.gameObject.tag == "Die")
         {
+            source.clip = roblox;
+            source.Play();
             perdiste.enabled = enabled;
             boton.playing = false;
             Destroy(gameObject);
         }
         if(col.gameObject.tag == "Win")
         {
+            winning = true;
             boton.playing = false;
             ganaste.enabled = enabled;
         }

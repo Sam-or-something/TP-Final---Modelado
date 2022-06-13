@@ -7,6 +7,7 @@ public class Jugar : MonoBehaviour
 {
     public Canvas jugar;
     public bool playing;
+    public AudioSource source;
 
     // Start is called before the first frame update
     void Start()
@@ -17,7 +18,14 @@ public class Jugar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (!playing)
+        {
+            source.enabled = !enabled;
+        }
+        else
+        {
+            source.enabled = enabled;
+        }
     }
 
     public void empezar()
