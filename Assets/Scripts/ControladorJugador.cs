@@ -7,13 +7,15 @@ public class ControladorJugador : MonoBehaviour
 {
     public float movementSpeed, jumpForce;
     private Jugar boton;
-    public GameObject controlador;
-    public Canvas ganaste, perdiste;
+    public GameObject controlador, coinPrefab;
+    public Canvas ganaste, perdiste, btnRestart;
     bool onFloor;
     public bool winning;
     Rigidbody rb;
     public AudioSource source;
     public AudioClip roblox;
+    int monedas;
+    public Text counterMonedas;
 
     void Start()
     {
@@ -22,10 +24,12 @@ public class ControladorJugador : MonoBehaviour
         onFloor = true;
         rb = GetComponent<Rigidbody>();
         boton = controlador.GetComponent<Jugar>();
+        btnRestart.enabled = !enabled;
     }
 
     void Update()
     {
+        counterMonedas.text = "Monedas: " + monedas.ToString();
         if (boton.playing)
         {
             if (Input.GetKey(KeyCode.D) && transform.position.x <= 4)
@@ -43,6 +47,15 @@ public class ControladorJugador : MonoBehaviour
             }
         }
     }
+
+    public void restart()
+    {
+        gameObject.transform.position = new Vector3(0, 0, 0);
+        boton.playing = true;
+        btnRestart.enabled = !enabled;
+        ganaste.enabled = false;
+        perdiste.enabled = false;
+    }
     void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag == "Piso")
@@ -55,13 +68,22 @@ public class ControladorJugador : MonoBehaviour
             source.Play();
             perdiste.enabled = enabled;
             boton.playing = false;
-            Destroy(gameObject);
+            btnRestart.enabled = enabled;
         }
         if(col.gameObject.tag == "Win")
         {
             winning = true;
             boton.playing = false;
             ganaste.enabled = enabled;
+            btnRestart.enabled = enabled;
+        }
+    }
+    
+    private void OnTriggerEnter(Collider col)
+    {
+        if(col.gameObject.tag == "Coin")
+        {
+            monedas += 1;
         }
     }
 }
