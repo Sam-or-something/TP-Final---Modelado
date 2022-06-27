@@ -50,7 +50,7 @@ public class ControladorJugador : MonoBehaviour
 
     public void restart()
     {
-        gameObject.transform.position = new Vector3(0, 0, 0);
+        gameObject.transform.position = new Vector3(0, 0, -7);
         boton.playing = true;
         btnRestart.enabled = !enabled;
         ganaste.enabled = false;
