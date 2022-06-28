@@ -24,6 +24,7 @@ public class wining : MonoBehaviour
             for(int i = cantInt; i >= 0; i--)
             {
                 clone = Instantiate(woooo);
+                clone.transform.position = gameObject.transform.position;
             }
         }
     }
